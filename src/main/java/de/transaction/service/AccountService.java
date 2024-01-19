@@ -1,6 +1,7 @@
 package de.transaction.service;
 
 import de.transaction.entity.BankUser;
+import de.transaction.repo.AccountRepository;
 import de.transaction.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -10,18 +11,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements UserDetailsService {
+public class AccountService {
 
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        BankUser user = userRepository.findByUsername(username);
-        return User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                                .build();
-
-    }
 }
