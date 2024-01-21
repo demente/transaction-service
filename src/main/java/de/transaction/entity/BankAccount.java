@@ -3,16 +3,16 @@ package de.transaction.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="bank_accounts")
+@Table(name = "accounts")
 public class BankAccount {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String iban;
 
-    @JoinColumn(name="owner_id")
+    @JoinColumn(name = "owner_id")
     @ManyToOne
     private BankUser owner;
 

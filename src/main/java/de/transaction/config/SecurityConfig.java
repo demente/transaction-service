@@ -13,15 +13,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-public class SecurityConfig{
+public class SecurityConfig {
 
     @Autowired
     private UserService userService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/swagger-ui/index.html"
-         );
+        return (web) -> web.ignoring().requestMatchers("/swagger-ui/index.html", "/transactions/**"
+        );
     }
 
     @Bean

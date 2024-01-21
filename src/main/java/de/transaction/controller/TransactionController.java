@@ -1,37 +1,45 @@
 package de.transaction.controller;
 
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
+import de.transaction.dto.TransactionInput;
+import de.transaction.entity.Transaction;
+import de.transaction.service.TransactionService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.List;
 
-@RestController("/transaction")
+@RestController
+@RequestMapping("/transactions")
 public class TransactionController {
 
-    @RequestMapping("book")
+    @Autowired
+    private TransactionService transactionService;
+
+    @RequestMapping(name = "book", method = RequestMethod.POST, path = "book")
     @PostMapping
-    void book(@RequestParam String documentURL)  {
+    public ResponseEntity<Transaction> book(@Valid @RequestBody TransactionInput input) {
+        Transaction transaction = transactionService.bookTransaction(input);
+        return new ResponseEntity<>(transaction, HttpStatus.OK);
+    }
+
+    @RequestMapping(name = "rollback", method = RequestMethod.POST, path = "rollback")
+    @PostMapping
+    public ResponseEntity rollback(@Valid @RequestParam Long transactionId) {
+        transactionService.rollback(transactionId);
+        return new ResponseEntity<>(null, HttpStatus.OK);
 
     }
 
-    @RequestMapping("rollback")
-    @PostMapping
-    void rollback(){
-
-    }
-
-    @RequestMapping("list")
+    @RequestMapping(name = "list", method = RequestMethod.GET, path = "list")
     @GetMapping
-    void list(@AuthenticationPrincipal User user){
-
+    public ResponseEntity<List<Transaction>> list(@AuthenticationPrincipal User user) {
+        List<Transaction> list = transactionService.listTransactions();
+        return new ResponseEntity<List<Transaction>>(list, HttpStatus.OK);
     }
 
 }

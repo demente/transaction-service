@@ -10,6 +10,10 @@ Service provides an audit log (e.g., who changed what when?)and persist the data
 
 # How to run
 
+`docker compose up`
 
+# API
 
-http://localhost:8080/swagger-ui/index.html
+POST http://localhost:8080/transactions/book
+POST http://localhost:8080/transactions/rollback
+GET http://localhost:8080/transactions/list
